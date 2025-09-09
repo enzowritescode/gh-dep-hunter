@@ -1,4 +1,4 @@
-# Dependency Finder
+# GitHub Dependency Hunter
 
 ## Prerequisites
 
@@ -7,7 +7,7 @@ The script assumes you have a GitHub token in your environment, either `GH_TOKEN
 ## Setup
 
 ```
-git clone https://github.com/enzowritescode/dependency-finder.git
+git clone https://github.com/enzowritescode/gh-dep-hunter.git
 
 cd dependency-finder
 
