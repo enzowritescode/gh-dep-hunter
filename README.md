@@ -1,5 +1,7 @@
 # GitHub Dependency Hunter
 
+Scan `package-lock.json` files in your GitHub org for for specified package versions 
+
 ## Prerequisites
 
 The script assumes you have a GitHub token in your environment, either `GH_TOKEN` or `GITHUB_TOKEN`
@@ -34,3 +36,7 @@ Sample files to be used for the `--versions` flag are in `versions/`
 
 - qix.txt
 	- Impacted dependencies from the Qix npm account compromise
+
+## Future Work
+
+Support for other manifest files
