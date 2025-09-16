@@ -395,8 +395,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Scan GitHub org for package-lock.json and match target package versions.")
     parser.add_argument("--org", required=True, help="GitHub organization name (e.g., mattermost)")
     parser.add_argument("--versions", required=True, help="Path to versions.txt (format: name@version per line)")
-    parser.add_argument("--max-pages", type=int, default=1000, help="Max search result pages (default: 1000)")
-    parser.add_argument("--timeout", type=int, default=30, help="HTTP timeout seconds (default: 30)")
     parser.add_argument("--debug", action="store_true", help="Print debug info for target packages found at any version")
     parser.add_argument("--repo-type", choices=["public", "private", "all"], default="all",
                         help="Specify the type of repositories to scan: public, private, or all (default: all)")
