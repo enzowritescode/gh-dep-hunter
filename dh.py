@@ -11,7 +11,7 @@ Authentication:
   - Uses GH_TOKEN or GITHUB_TOKEN environment variable.
 
 Usage:
-  python gh_lock_scan.py --org <org_name> --versions versions.txt [--debug] > report.md
+  python dh.py --org <org_name> --versions versions.txt [--debug] > report.md
 
 versions.txt format (one per line):
   ansi-styles@6.2.2
