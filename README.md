@@ -11,7 +11,7 @@ The script assumes you have a GitHub token in your environment, either `GH_TOKEN
 ```
 git clone https://github.com/enzowritescode/gh-dep-hunter.git
 
-cd dependency-finder
+cd gh-dep-hunter
 
 # create python virtual env
 python3 -m venv venv
