@@ -23,11 +23,11 @@ pip install requests
 
 ```
 # run for all repos
-python df.py --org YOUR_ORG --versions versions.txt > report.md 
+python dh.py --org YOUR_ORG --versions versions.txt > report.md
 
 # run separate scans for public/private repos
-python df.py --org YOUR_ORG --repo-type public --versions versions.txt > public_report.md 
-python df.py --org YOUR_ORG --repo-type private --versions versions.txt > private_report.md
+python dh.py --org YOUR_ORG --repo-type public --versions versions.txt > public_report.md
+python dh.py --org YOUR_ORG --repo-type private --versions versions.txt > private_report.md
 ```
 
 ## Sample versions files
