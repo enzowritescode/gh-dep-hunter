@@ -1,10 +1,11 @@
 # GitHub Dependency Hunter
 
-Scan `package-lock.json` files in your GitHub org for for specified package versions 
+This repository offers a solution for detecting specific dependencies in `package-lock.json` files, such as the indicators of compromise (IoCs) related to supply chain attacks like Shai Hulud.
 
 ## Prerequisites
 
-The script assumes you have a GitHub token in your environment, either `GH_TOKEN` or `GITHUB_TOKEN`
+- Python 3.9 or higher.
+- `GH_TOKEN` or `GITHUB_TOKEN` is set in your environment.
 
 ## Setup
 
@@ -13,13 +14,31 @@ git clone https://github.com/enzowritescode/gh-dep-hunter.git
 
 cd gh-dep-hunter
 
-# create python virtual env
+# (optional) create python virtual env
 python3 -m venv venv
 source venv/bin/activate
-pip install requests
+
+# install dependencies
+pip install -r requirements.txt
 ```
 
 ## Usage
+
+```
+usage: dh.py [-h] --org ORG --versions VERSIONS [--debug] [--repo-type {public,private}]
+
+Scan GitHub org for package-lock.json and match target package versions.
+
+options:
+  -h, --help            show this help message and exit
+  --org ORG             GitHub organization name (e.g., mattermost)
+  --versions VERSIONS   Path to versions.txt (format: name@version per line)
+  --debug               Print debug info for target packages found at any version
+  --repo-type {public,private}
+                        Specify the type of repositories to scan: public or private (default: all)
+```
+
+## Examples
 
 ```
 # run for all repos

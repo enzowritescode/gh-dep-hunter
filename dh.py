@@ -1,23 +1,4 @@
 #!/usr/bin/env python3
-"""
-Scan a GitHub organization for package-lock.json files and report occurrences
-of specific packages at specific versions. Outputs Markdown to stdout.
-
-Requirements:
-  - Python 3.8+
-  - requests 2.x  (pip install requests)
-
-Authentication:
-  - Uses GH_TOKEN or GITHUB_TOKEN environment variable.
-
-Usage:
-  python dh.py --org <org_name> --versions versions.txt [--debug] > report.md
-
-versions.txt format (one per line):
-  ansi-styles@6.2.2
-  debug@4.4.2
-  ...
-"""
 
 import argparse
 import base64
@@ -396,8 +377,7 @@ def main() -> None:
     parser.add_argument("--org", required=True, help="GitHub organization name (e.g., mattermost)")
     parser.add_argument("--versions", required=True, help="Path to versions.txt (format: name@version per line)")
     parser.add_argument("--debug", action="store_true", help="Print debug info for target packages found at any version")
-    parser.add_argument("--repo-type", choices=["public", "private", "all"], default="all",
-                        help="Specify the type of repositories to scan: public, private, or all (default: all)")
+    parser.add_argument("--repo-type", choices=["public", "private"], default="all", help="Specify the type of repositories to scan: public or private (default: all)")
     args = parser.parse_args()
 
     targets = parse_versions_file(args.versions)
