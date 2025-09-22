@@ -76,3 +76,18 @@ def make_markdown_report(
         lines.append("")
 
     return "\n".join(lines)
+
+
+def print_table(repo: str, data: List[Tuple[str, str, List[Tuple[str, str, str]]]], note: str = "") -> None:
+    """
+    Print a table of package occurrences for a specific repository.
+    """
+    print(f"\n## Repository: {repo}\n")
+    if note:
+        print(f"**Note:** {note}\n")
+    print("| Package | Vulnerable Version | Found Versions | Repository |")
+    print("|---|---|---|---|")
+    for package, vuln_version, found_versions in data:
+        found_versions_str = "<br>".join(f"{ver} ({loc})" for ver, loc, repo in found_versions)
+        repo_names = ", ".join(set(repo for _, _, repo in found_versions))
+        print(f"| {package} | {vuln_version} | {found_versions_str} | {repo_names} |")

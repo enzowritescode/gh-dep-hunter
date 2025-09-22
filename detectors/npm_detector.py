@@ -8,6 +8,7 @@ from config import GITHUB_API
 from utils.report_generator import make_markdown_report
 from .base_detector import BaseDetector
 from utils.github_utils import list_all_repositories
+from utils.report_generator import print_table
 
 
 class NpmDetector(BaseDetector):
