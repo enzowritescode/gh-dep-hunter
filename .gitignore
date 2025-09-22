@@ -3,3 +3,4 @@ report.md
 public_report.md
 private_report.md
 venv/
+__pycache__/
