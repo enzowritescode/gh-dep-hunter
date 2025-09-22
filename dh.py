@@ -10,13 +10,9 @@ from typing import Dict, List, Tuple, Set, Iterable, Optional
 
 import requests
 
-from detectors.npm_detector import (
-    collect_occurrences, find_matches, derive_name_from_path_key,
-    make_markdown_report, NpmDetector
-)
+from detectors.npm_detector import NpmDetector
 from detectors.go_detector import GoDetector
 from config import GITHUB_API
-from utils import list_all_repositories
 from utils.github_utils import get_token, http_get, list_all_repositories
 from utils.report_generator import make_markdown_report
 
@@ -56,21 +52,6 @@ def find_matches(occurrences: Iterable[Tuple[str, str, str]],
     return [(n, v, w) for (n, v, w) in occurrences if (n, v) in target_set]
 
 
-def print_table(repo: str, data: List[Tuple[str, str, List[Tuple[str, str, str]]]], note: str = "") -> None:
-    """
-    Print a table of package occurrences for a specific repository.
-    """
-    print(f"\n## Repository: {repo}\n")
-    if note:
-        print(f"**Note:** {note}\n")
-    print("| Package | Vulnerable Version | Found Versions | Repository |")
-    print("|---|---|---|---|")
-    for package, vuln_version, found_versions in data:
-        found_versions_str = "<br>".join(f"{ver} ({loc})" for ver, loc, repo in found_versions)
-        repo_names = ", ".join(set(repo for _, _, repo in found_versions))
-        print(f"| {package} | {vuln_version} | {found_versions_str} | {repo_names} |")
-
-
 def add_common_flags(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--org", required=True, help="GitHub organization name (e.g., mattermost)")
     parser.add_argument("--versions", required=True, help="Path to versions.txt (format: name@version per line)")
@@ -83,7 +64,7 @@ def setup_session(token: str) -> requests.Session:
     session.headers.update({
         "Authorization": f"Bearer {token}",
         "Accept": "application/vnd.github+json",
-        "User-Agent": "gh-lock-scan/1.1",
+        "User-Agent": "gh-dep-hunter/1.0",
     })
     return session
 
