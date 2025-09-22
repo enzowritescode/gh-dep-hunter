@@ -22,7 +22,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usa
+## Usage
 
 ```
 usage: dh.py [-h] --detector {npm,go} --org ORG --versions VERSIONS [--debug] [--repo-type {public,private}]
