@@ -1,6 +1,6 @@
 # GitHub Dependency Hunter
 
-This repository offers a solution for detecting specific dependencies in `package-lock.json` files, such as the indicators of compromise (IoCs) related to supply chain attacks like Shai Hulud.
+This tool offers a solution for scanning `package-lock.json` and `go.sum` files to detect dependencies that may be associated with supply chain attacks, such as those seen in incidents like Shai Hulud.
 
 ## Prerequisites
 
@@ -22,15 +22,16 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Usa
 
 ```
-usage: dh.py [-h] --org ORG --versions VERSIONS [--debug] [--repo-type {public,private}]
+usage: dh.py [-h] --detector {npm,go} --org ORG --versions VERSIONS [--debug] [--repo-type {public,private}]
 
-Scan GitHub org for package-lock.json and match target package versions.
+Scan GitHub org for dependencies and match target package versions.
 
 options:
   -h, --help            show this help message and exit
+  --detector {npm,go}   Specify the type of detector to use: npm or go
   --org ORG             GitHub organization name (e.g., mattermost)
   --versions VERSIONS   Path to versions.txt (format: name@version per line)
   --debug               Print debug info for target packages found at any version
@@ -42,11 +43,14 @@ options:
 
 ```
 # run for all repos
-python dh.py --org YOUR_ORG --versions versions.txt > report.md
+python dh.py --detector npm --org YOUR_ORG --versions versions.txt > report.md
+python dh.py --detector go --org YOUR_ORG --versions versions.txt > report.md
 
 # run separate scans for public/private repos
-python dh.py --org YOUR_ORG --repo-type public --versions versions.txt > public_report.md
-python dh.py --org YOUR_ORG --repo-type private --versions versions.txt > private_report.md
+python dh.py --detector npm --org YOUR_ORG --repo-type public --versions versions.txt > public_report.md
+python dh.py --detector npm --org YOUR_ORG --repo-type private --versions versions.txt > private_report.md
+python dh.py --detector go --org YOUR_ORG --repo-type public --versions versions.txt > public_report.md
+python dh.py --detector go --org YOUR_ORG --repo-type private --versions versions.txt > private_report.md
 ```
 
 ## Sample versions files
