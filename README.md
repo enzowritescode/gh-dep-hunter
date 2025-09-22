@@ -25,14 +25,14 @@ pip install -r requirements.txt
 ## Usage
 
 ```
-usage: dh.py [-h] --detector {npm,go} --org ORG --versions VERSIONS [--debug] [--repo-type {public,private}]
+usage: dh.py [-h] --detector {npm,go} --account ACCOUNT --versions VERSIONS [--debug] [--repo-type {public,private}]
 
 Scan GitHub org for dependencies and match target package versions.
 
 options:
   -h, --help            show this help message and exit
   --detector {npm,go}   Specify the type of detector to use: npm or go
-  --org ORG             GitHub organization name (e.g., mattermost)
+  --account ACCOUNT     GitHub user or organization name
   --versions VERSIONS   Path to versions.txt (format: name@version per line)
   --debug               Print debug info for target packages found at any version
   --repo-type {public,private}
@@ -43,14 +43,14 @@ options:
 
 ```
 # run for all repos
-python dh.py --detector npm --org YOUR_ORG --versions versions.txt > report.md
-python dh.py --detector go --org YOUR_ORG --versions versions.txt > report.md
+python dh.py --detector npm --account YOUR_ACCOUNT --versions versions.txt > report.md
+python dh.py --detector go --account YOUR_ACCOUNT --versions versions.txt > report.md
 
 # run separate scans for public/private repos
-python dh.py --detector npm --org YOUR_ORG --repo-type public --versions versions.txt > public_report.md
-python dh.py --detector npm --org YOUR_ORG --repo-type private --versions versions.txt > private_report.md
-python dh.py --detector go --org YOUR_ORG --repo-type public --versions versions.txt > public_report.md
-python dh.py --detector go --org YOUR_ORG --repo-type private --versions versions.txt > private_report.md
+python dh.py --detector npm --account YOUR_ACCOUNT --repo-type public --versions versions.txt > public_report.md
+python dh.py --detector npm --account YOUR_ACCOUNT --repo-type private --versions versions.txt > private_report.md
+python dh.py --detector go --account YOUR_ACCOUNT --repo-type public --versions versions.txt > public_report.md
+python dh.py --detector go --account YOUR_ACCOUNT --repo-type private --versions versions.txt > private_report.md
 ```
 
 ## Sample versions files

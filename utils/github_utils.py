@@ -55,19 +55,33 @@ def http_get(session: requests.Session, url: str, params: Optional[dict] = None,
     return resp
 
 
-def list_all_repositories(session: requests.Session, org: str, repo_type: str) -> List[str]:
+def list_all_repositories(session: requests.Session, account: str, repo_type: str) -> List[str]:
     """
-    List all repositories in the organization based on the specified type.
+    List all repositories for a GitHub user or organization based on the specified type.
     """
     repos = []
     page = 1
+    is_org = False
+
+    # Determine if the account is a user or an organization
+    resp = session.get(f"{GITHUB_API}/users/{account}")
+    if resp.status_code == 200:
+        user_data = resp.json()
+        is_org = user_data.get('type') == 'Organization'
+    else:
+        sys.stderr.write(f"Failed to determine account type: {resp.status_code} {resp.text}\n")
+        return repos
+
+    # Use the appropriate endpoint
+    endpoint = f"{GITHUB_API}/orgs/{account}/repos" if is_org else f"{GITHUB_API}/users/{account}/repos"
+
     while True:
         params = {
             "per_page": 100,
             "page": page,
             "type": repo_type if repo_type != "all" else None,
         }
-        resp = http_get(session, f"{GITHUB_API}/orgs/{org}/repos", params=params)
+        resp = http_get(session, endpoint, params=params)
         if resp.status_code != 200:
             sys.stderr.write(f"Failed to list repositories: {resp.status_code} {resp.text}\n")
             break

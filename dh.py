@@ -53,7 +53,7 @@ def find_matches(occurrences: Iterable[Tuple[str, str, str]],
 
 
 def add_common_flags(parser: argparse.ArgumentParser) -> None:
-    parser.add_argument("--org", required=True, help="GitHub organization name (e.g., mattermost)")
+    parser.add_argument("--account", required=True, help="GitHub user or organization name")
     parser.add_argument("--versions", required=True, help="Path to versions.txt (format: name@version per line)")
     parser.add_argument("--debug", action="store_true", help="Print debug info for target packages found at any version")
     parser.add_argument("--repo-type", choices=["public", "private"], default="all", help="Specify the type of repositories to scan: public or private (default: all)")
@@ -97,8 +97,8 @@ def main() -> None:
         sys.exit(1)
 
     # Process repositories and generate report
-    unique_repos, results, total_files_scanned = detector.process_repositories(session, args.org, args.repo_type, targets)
-    report_md = make_markdown_report(args.org, targets, results, total_files_scanned, unique_repos, detector.file_type)
+    unique_repos, results, total_files_scanned = detector.process_repositories(session, args.account, args.repo_type, targets)
+    report_md = make_markdown_report(args.account, targets, results, total_files_scanned, unique_repos, detector.file_type)
     print(report_md)
 
 
