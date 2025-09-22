@@ -96,15 +96,8 @@ def generate_report(org: str, targets: List[Tuple[str, str]], results: List[dict
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Scan GitHub org for dependencies and match target package versions.")
-    subparsers = parser.add_subparsers(dest='command', required=True)
-
-    # NPM command
-    npm_parser = subparsers.add_parser('npm', help='Scan for npm dependencies')
-    add_common_flags(npm_parser)
-
-    # Go command
-    go_parser = subparsers.add_parser('go', help='Scan for Go dependencies')
-    add_common_flags(go_parser)
+    parser.add_argument('--detector', choices=['npm', 'go'], required=True, help='Specify the type of detector to use: npm or go')
+    add_common_flags(parser)
 
     args = parser.parse_args()
 
@@ -113,13 +106,13 @@ def main() -> None:
     token = get_token()
     session = setup_session(token)
 
-    # Set the detector based on the command
-    if args.command == 'npm':
+    # Set the detector based on the --detector flag
+    if args.detector == 'npm':
         detector = NpmDetector()
-    elif args.command == 'go':
+    elif args.detector == 'go':
         detector = GoDetector()
     else:
-        sys.stderr.write(f"Error: Unknown command '{args.command}'\n")
+        sys.stderr.write(f"Error: Unknown detector '{args.detector}'\n")
         sys.exit(1)
 
     # Process repositories and generate report
