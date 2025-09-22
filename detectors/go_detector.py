@@ -7,7 +7,7 @@ import sys
 from config import GITHUB_API
 import base64
 import time
-from utils.report_generator import make_markdown_report
+from utils.report_generator import make_markdown_report, print_table
 from utils.github_utils import list_all_repositories
 from .base_detector import BaseDetector
 
