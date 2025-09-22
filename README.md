@@ -57,8 +57,12 @@ python dh.py --detector go --org YOUR_ORG --repo-type private --versions version
 
 Sample files to be used for the `--versions` flag are in `versions/`
 
-- qix.txt
+- `qix.txt`
 	- Impacted dependencies from the Qix npm account compromise
+- `shai-hulud.txt`
+	- Impacted dependencies from the Shai Hulud incident
+- `tinycolor.txt`
+	- Impacted dependencies from the Tinycolor incident
 
 ## Future Work
 
