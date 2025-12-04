@@ -1,19 +1,14 @@
 #!/usr/bin/env python3
 
 import argparse
-import base64
-import json
-import os
 import sys
-import time
-from typing import Dict, List, Tuple, Set, Iterable, Optional
+from typing import List, Tuple, Set
 
 import requests
 
 from detectors.npm_detector import NpmDetector
 from detectors.go_detector import GoDetector
-from config import GITHUB_API
-from utils.github_utils import get_token, http_get, list_all_repositories
+from utils.github_utils import get_token
 from utils.report_generator import make_markdown_report
 
 
@@ -42,24 +37,19 @@ def parse_versions_file(path: str) -> List[Tuple[str, str]]:
     return targets
 
 
-def find_matches(occurrences: Iterable[Tuple[str, str, str]],
-                 targets: List[Tuple[str, str]]) -> List[Tuple[str, str, str]]:
-    """
-    Filter occurrences to only those matching exact package@version in targets.
-    Returns list of (name, version, where).
-    """
-    target_set: Set[Tuple[str, str]] = set((n, v) for n, v in targets)
-    return [(n, v, w) for (n, v, w) in occurrences if (n, v) in target_set]
-
-
 def add_common_flags(parser: argparse.ArgumentParser) -> None:
+    """Add common command-line arguments to the parser."""
     parser.add_argument("--account", required=True, help="GitHub user or organization name")
     parser.add_argument("--versions", required=True, help="Path to versions.txt (format: name@version per line)")
     parser.add_argument("--debug", action="store_true", help="Print debug info for target packages found at any version")
     parser.add_argument("--repo-type", choices=["public", "private"], default="all", help="Specify the type of repositories to scan: public or private (default: all)")
+    parser.add_argument("--include-archived", action="store_true", help="Include archived repositories in scan (default: exclude archived repos)") 
 
 
 def setup_session(token: str) -> requests.Session:
+    """
+    Setup a requests session with GitHub authentication.
+    """
     session = requests.Session()
     session.headers.update({
         "Authorization": f"Bearer {token}",
@@ -69,15 +59,17 @@ def setup_session(token: str) -> requests.Session:
     return session
 
 
-def generate_report(org: str, targets: List[Tuple[str, str]], results: List[dict], total_files_scanned: int, unique_repos: Set[str]) -> None:
-    sys.stderr.write("Scanning complete. All files have been processed.\n")
-    report_md = make_markdown_report(org, targets, results, total_files_scanned, unique_repos)
-    print(report_md)
-
-
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Scan GitHub org for dependencies and match target package versions.")
-    parser.add_argument('--detector', choices=['npm', 'go'], required=True, help='Specify the type of detector to use: npm or go')
+    """Main entry point for the dependency scanner."""
+    parser = argparse.ArgumentParser(
+        description="Scan GitHub org for dependencies and match target package versions."
+    )
+    parser.add_argument(
+        '--detector', 
+        choices=['npm', 'go'], 
+        required=True, 
+        help='Specify the type of detector to use: npm or go'
+    )
     add_common_flags(parser)
 
     args = parser.parse_args()
@@ -97,8 +89,19 @@ def main() -> None:
         sys.exit(1)
 
     # Process repositories and generate report
-    unique_repos, results, total_files_scanned = detector.process_repositories(session, args.account, args.repo_type, targets)
-    report_md = make_markdown_report(args.account, targets, results, total_files_scanned, unique_repos, detector.file_type)
+    unique_repos, results, total_files_scanned, repos_with_special_case = detector.process_repositories(
+        session, args.account, args.repo_type, targets, args.include_archived
+    )
+    
+    report_md = make_markdown_report(
+        args.account, 
+        targets, 
+        results, 
+        total_files_scanned, 
+        unique_repos, 
+        detector.file_type,
+        repos_with_special_case
+    )
     print(report_md)
 
 
