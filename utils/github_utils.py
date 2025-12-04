@@ -143,7 +143,7 @@ def http_get(session: requests.Session, url: str, params: Optional[dict] = None,
     return resp
 
 
-def list_all_repositories(session: requests.Session, account: str, repo_type: str, include_archived: bool = False) -> List[str]:  # NUEVO: parámetro
+def list_all_repositories(session: requests.Session, account: str, repo_type: str, include_archived: bool = False) -> List[str]:
     """
     List all repositories for a GitHub user or organization based on the specified type.
     Includes rate limit awareness.

@@ -37,14 +37,17 @@ options:
   --debug               Print debug info for target packages found at any version
   --repo-type {public,private}
                         Specify the type of repositories to scan: public or private (default: all)
+  --include-archived    Include archived repositories in scan (default: exclude archived repos)
 ```
 
 ## Examples
-
 ```
-# run for all repos
+# run for all repos (excluding archived by default)
 python dh.py --detector npm --account YOUR_ACCOUNT --versions versions.txt > report.md
 python dh.py --detector go --account YOUR_ACCOUNT --versions versions.txt > report.md
+
+# include archived repositories
+python dh.py --detector npm --account YOUR_ACCOUNT --versions versions.txt --include-archived > report.md
 
 # run separate scans for public/private repos
 python dh.py --detector npm --account YOUR_ACCOUNT --repo-type public --versions versions.txt > public_report.md

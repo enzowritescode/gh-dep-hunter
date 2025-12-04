@@ -188,7 +188,7 @@ class GoDetector(BaseDetector):
         target_set = set(targets)
         return [(module, version) for module, version in dependencies if (module, version) in target_set]
 
-    def process_repositories(self, session: requests.Session, org: str, repo_type: str, targets: List[Tuple[str, str]], include_archived: bool = False) -> Tuple[Set[str], List[dict], int, List[str]]:  # NUEVO: parámetro
+    def process_repositories(self, session: requests.Session, org: str, repo_type: str, targets: List[Tuple[str, str]], include_archived: bool = False) -> Tuple[Set[str], List[dict], int, List[str]]:
         """Process all repositories in the organization"""
         unique_repos: Set[str] = set()
         results: List[dict] = []
@@ -198,10 +198,10 @@ class GoDetector(BaseDetector):
         sys.stderr.write(f"Starting scan for organization: {org}\n")
         sys.stderr.write(f"Repository type: {repo_type}\n")
         sys.stderr.write(f"Target modules: {len(targets)}\n")
-        sys.stderr.write(f"Include archived: {include_archived}\n")  # NUEVO: log
+        sys.stderr.write(f"Include archived: {include_archived}\n")
         sys.stderr.write(f"{'='*80}\n\n")
 
-        repos = list_all_repositories(session, org, repo_type, include_archived)  # NUEVO: pasar parámetro
+        repos = list_all_repositories(session, org, repo_type, include_archived)
         total_repos = len(repos)
         
         sys.stderr.write(f"Found {total_repos} repositories to scan\n\n")
